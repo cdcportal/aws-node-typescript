@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require("fs");
-
 const webpack = require('webpack');
+import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-secrets-manager";
 
 const job = async () => {
 
@@ -17,15 +17,32 @@ const job = async () => {
             2. Iterate over secrets asynchronously from Cloud Secret Manager.
     */
 
-    const allFileContents = fs.readFileSync('.env', 'utf-8');
-    allFileContents.split(/\r?\n/).forEach(line => {
-        if (line.trim() == '')
-            return;
-        const strings = line.split(" = ");
-        const key = `process.env.${strings[0]}`;
-        const val = JSON.stringify(strings[1]);
-        ENVIRONMENT_VARIABLES[key] = val;
-    });
+    const secret_name = "depl-aws-secrets";
+    const client = new SecretsManagerClient({ region: "us-east-1" });
+    let response;
+    try {
+        response = await client.send(
+            new GetSecretValueCommand({
+                SecretId: secret_name,
+                VersionStage: "AWSCURRENT", // VersionStage defaults to AWSCURRENT if unspecified
+            })
+        );
+    } catch (error) {
+        throw error;
+    }
+
+    const secret = response.SecretString;
+    if (secret) {
+        const obj = JSON.parse(secret);
+        try {
+            for (const [k, v] of Object.entries(obj)) {
+                const updatedKey = `process.env.${k}`;
+                ENVIRONMENT_VARIABLES[updatedKey] = v;
+            }
+        } catch (err) {
+            console.log("Error occured, ", err);
+        }
+    }
 
     console.log(ENVIRONMENT_VARIABLES);
 
