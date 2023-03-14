@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require("fs");
 const webpack = require('webpack');
-import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-secrets-manager";
+const { SecretsManagerClient, GetSecretValueCommand } = require("@aws-sdk/client-secrets-manager");
 
 const job = async () => {
 
