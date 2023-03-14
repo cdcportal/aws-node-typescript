@@ -11,7 +11,7 @@ if(process.env.NODE_ENV !== 'production'){
 const app = express();
  
 app.get("/", function (req, res) {
-  res.send("Hello World," + process.env.sec1);
+  res.send("This is an updated Hello World," + process.env.sec1);
 });
  
 app.listen(3000, () => console.log("Listening at 3000!"));
