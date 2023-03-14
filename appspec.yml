@@ -1,6 +1,6 @@
 version: 0.0
 os: linux
-files: 
+files:
   - source: /
   - destinaton: /home/ec2-user/aws-node-ts-backend
 hooks:
@@ -8,11 +8,11 @@ hooks:
     - location: scripts/application_stop.sh
       timeout: 300
       runas: ec2-user
-    BeforeInstall:
+  BeforeInstall:
     - location: scripts/before_install.sh
       timeout: 300
       runas: ec2-user
-    ApplicationStart:
+  ApplicationStart:
     - location: scripts/application_start.sh
       timeout: 300
       runas: ec2-user
