@@ -37,7 +37,7 @@ const job = async () => {
         try {
             for (const [k, v] of Object.entries(obj)) {
                 const updatedKey = `process.env.${k}`;
-                ENVIRONMENT_VARIABLES[updatedKey] = v;
+                ENVIRONMENT_VARIABLES[updatedKey] = JSON.stringify(v);
             }
         } catch (err) {
             console.log("Error occured, ", err);

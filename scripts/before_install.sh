@@ -9,6 +9,7 @@ nvm install 16
 DIR="/home/ec2-user/aws-node-ts-backend"
 if [ -d "$DIR" ]; then
   echo "${DIR} exists"
+  rm -rf ${DIR}
 else
   echo "Creating ${DIR} directory"
   mkdir ${DIR}
